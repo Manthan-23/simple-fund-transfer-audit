@@ -1,0 +1,34 @@
+.history-container {
+  margin-top: 30px;
+}
+
+.history-container h2 {
+  margin-bottom: 10px;
+}
+
+.sort-btn {
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f3f4f6;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
