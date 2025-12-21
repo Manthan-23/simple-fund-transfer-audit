@@ -1,7 +1,7 @@
 simple-fund-audit/node_modules/
 node_modules/
 simple-fund-audit-backend/node_modules/
-simple-fund-audit-backend/.env/
+./simple-fund-audit-backend/.env/
 .env/
 
 simple-fund-audit-backend/pnpm-lock.yaml/
