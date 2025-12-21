@@ -103,7 +103,7 @@ backend design, aligned with real-world fintech systems.
       "message": "Transfer successful"
     }
 
-### -> GET `/api/transactions/:userId`
+### -> GET `/api/transactions/:userId?order=desc`
   Fetches transaction history for a user (sender or receiver), sorted by newest first.
 
   ***Optional query parameter -***
@@ -113,9 +113,80 @@ backend design, aligned with real-world fintech systems.
   ```
     ?order=asc | desc
   ```
+  > Authentication is simulated by scoping transaction history APIs to a specific user ID. Since authentication mechanisms (JWT/session) are out of scope for
+  this assignment, the backend ensures that only transactions related to the requested user are returned.
+
+  Response(when order = desc):
+  ```
+  {
+    "transactions": [
+        {
+            "id": 51,
+            "sender_id": 1,
+            "receiver_id": 2,
+            "amount": "200.00",
+            "status": "SUCCESS",
+            "created_at": "2025-12-21T18:31:43.227Z"
+        },
+        {
+            "id": 50,
+            "sender_id": 1,
+            "receiver_id": 2,
+            "amount": "400.00",
+            "status": "SUCCESS",
+            "created_at": "2025-12-21T13:52:34.472Z"
+        },
+        {
+            "id": 49,
+            "sender_id": 1,
+            "receiver_id": 2,
+            "amount": "500.00",
+            "status": "SUCCESS",
+            "created_at": "2025-12-21T13:51:20.999Z"
+        }
+    ]
+}
+```
+
+  Response(when order = asc):
+  ```
+  {
+    "transactions": [
+        {
+            "id": 49,
+            "sender_id": 1,
+            "receiver_id": 2,
+            "amount": "500.00",
+            "status": "SUCCESS",
+            "created_at": "2025-12-21T13:51:20.999Z"
+        },
+        {
+            "id": 50,
+            "sender_id": 1,
+            "receiver_id": 2,
+            "amount": "400.00",
+            "status": "SUCCESS",
+            "created_at": "2025-12-21T13:52:34.472Z"
+        },
+        {
+            "id": 51,
+            "sender_id": 1,
+            "receiver_id": 2,
+            "amount": "200.00",
+            "status": "SUCCESS",
+            "created_at": "2025-12-21T18:31:43.227Z"
+        }
+    ]
+}
+```
 
 ### -> GET `/api/balance/:userId`
   Fetches the current balance of a user.
+
+  Response(updated balance after successful transaction):
+  ```
+  {"balance":"2900.00"}
+  ```
 
 ---
 
@@ -162,6 +233,18 @@ backend design, aligned with real-world fintech systems.
   > even though there was enough balance. The fix was to `parseFloat` the amount value.
 
 - After the above issue, I tested various kinds of input in the `Amount field` like ( 'abcd', 'abcd10', '10abcd' ), to handle this kind of inputs I took some help from AI to genearate a `regex` which i can apply on the input field.
+
+### -> Effectiveness Score
+
+`Score: 4 / 5`
+
+AI tools help a lot in brainstorming the project before starting on it, thus they help in getting a better idea of how to approach a project or its final solution in the right way.
+
+AI tools significantly reduced development time for boilerplate code and
+initial logic. Manual debugging and refinements were also required to ensure
+correct transaction handling, data integrity and ACID compliance.
+
+Additionally, AI tools facilitated the design of the frontend with ease, saving time and effort.
 
 ---
 

@@ -4,19 +4,15 @@ export const transfer = async (req, res) => {
     const senderId = parseInt(req.body.senderId);
     const receiverId = parseInt(req.body.receiverId);
     const amount = req.body.amount;
-
-    // if (!senderId || !receiverId || isNaN(transferAmount) || transferAmount <= 0) {
-    //     return res.status(400).json({
-    //         message: "Invalid input! Please enter all the details"
-    //     });
-    // }
-
+    
+    // Check or invalid sender or receiver ID
     if (!senderId || !receiverId) {
         return res.status(400).json({
             message: "Invalid sender or receiver"
         });
     }
 
+    // Regex to avoid any unnecessary input in the amount field
     const amountRegex = /^\d+(\.\d{1,2})?$/;
 
     if (!amountRegex.test(amount)) {
@@ -36,8 +32,10 @@ export const transfer = async (req, res) => {
     const client = await pool.connect();
 
     try {
+        // BEGIN transaction
         await client.query("BEGIN");
 
+        // `FOR UPDATE` is used in query to lock the particular user row so it doesn't get edited by any other transaction
         const senderRes = await client.query(
             "SELECT balance FROM users WHERE id = $1 FOR UPDATE",
             [senderId]
@@ -62,21 +60,25 @@ export const transfer = async (req, res) => {
             throw new Error("Receiver not found");
         }
 
+        // DEBIT sender
         await client.query(
             "UPDATE users SET balance = balance - $1 WHERE id = $2",
             [transferAmount, senderId]
         );
 
+        // CREDIT RECEIVER
         await client.query(
             "UPDATE users SET balance = balance + $1 WHERE id = $2",
             [transferAmount, receiverId]
         );
 
+        // AUDIT log
         await client.query(
             "INSERT INTO transactions (sender_id, receiver_id, amount, status) VALUES ($1, $2, $3, $4)",
             [senderId, receiverId, transferAmount, "SUCCESS"]
         );
 
+        // COMMIT successful transaction
         await client.query("COMMIT");
 
         return res.status(200).json({
@@ -84,6 +86,7 @@ export const transfer = async (req, res) => {
         });
 
     } catch (err) {
+        // ROLLBACK if transaction fails
         await client.query("ROLLBACK");
 
         return res.status(400).json({
