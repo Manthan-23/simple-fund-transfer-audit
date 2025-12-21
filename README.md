@@ -142,9 +142,38 @@ backend design, aligned with real-world fintech systems.
 | created_at   | TIMESTAMP      |
 
 
+---
 
+## AI Tool Usage Log
 
+### -> AI-Assisted Tasks
 
+- First of all, I used AI to get a better idea of the assignment by doing some brainstorming with AI.
 
+- Assisted AI for designing a PostgreSQL schema for users and transactions.
 
+- Generated database transaction boilerplate for atomic `fund transfer logic`.
+
+- Took AI help in React component structure for designing the transaction history table UI and sorting functionality.
+
+- When I was testing fund transfer using different amounts like "100, 73, 200, 1000", it was failing for some amounts like "200, 73".
+- > Then I explained this issue to AI to understand why its happening and how i can fix that. The issue was PostgreSQL returns amount to NodeJS as a string so when i was
+  > comparing `senderBal < amount` it used to check first character of the amount value as it was `String`, so it was comparing ( 1000 < 73 ), as '1' < '7', it was generating insufficient balance error,
+  > even though there was enough balance. The fix was to `parseFloat` the amount value.
+
+- After the above issue, I tested various kinds of input in the `Amount field` like ( 'abcd', 'abcd10', '10abcd' ), to handle this kind of inputs I took some help from AI to genearate a `regex` which i can apply on the input field.
+
+---
+
+## Real-time Update Mechanism
+
+- After a successful transfer:
+
+- The frontend triggers a callback (onSuccess)
+
+- User balance is re-fetched immediately
+
+- Transaction history is re-fetched using a shared refresh key
+
+- UI updates instantly without page reloads
 
