@@ -151,7 +151,3 @@ export const getBalance = async (req, res) => {
 
 
 
-
-// await client.query(
-//   "INSERT INTO transactions (sender_id, receiver_id, amount, status) VALUES ($1, $2, $3, $4)",
-//   [senderId, receiverId, transferAmount, "FAILED"]
