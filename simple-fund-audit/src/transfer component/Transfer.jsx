@@ -3,7 +3,6 @@ import { transfer } from "../services/api";
 import './transfer.css';
 
 const TransferForm = ({ senderId, onSuccess }) => {
-  // const [senderId, setSenderId] = useState("");
   const [receiverId, setReceiverId] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
