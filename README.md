@@ -1,5 +1,7 @@
 # LenDenClub – Real-time Transaction & Audit Log System
 
+Repository Link - https://github.com/Manthan-23/simple-fund-transfer-audit
+
 ## Project Overview
 
 This project implements the **"Assignment 2: Real-time Transaction & Audit Log System"**
@@ -49,7 +51,7 @@ backend design, aligned with real-world fintech systems.
 - Inside *simple-fund-audit* folder run `pnpm install` to install all the required dependencies
 - Inside *simple-fund-audit-backend* folder run `pnpm install` to install all the required backend dependencies
 
-- > Inside the *simple-fund-audit-backend* folder create a `.env` file and add a varible named `DB_PASS` with your Database password for PostgresSQL(pgAdmin)
+- > Create a `.env` file in the backend directory using `.env.example` as reference and change the `DB_PASS` as per your PostgreSQL DB password.
 
 - Start the backend using `nodemon start` which will start the server on the `PORT = 9090`
 - Start the frontend using `pnpm run dev` which will start the *Vite server* on `localhost: 5173`
