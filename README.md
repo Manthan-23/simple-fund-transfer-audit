@@ -105,6 +105,34 @@ backend design, aligned with real-world fintech systems.
       "message": "Transfer successful"
     }
 
+  Queries used in the code for transferring the money(You can also check the implementation in `appController.js`):
+  ```
+  // BEGIN
+  BEGIN
+
+  // Locks the sender who is initiating the transder
+  SELECT balance FROM users WHERE id = $1 FOR UPDATE
+
+  // Gets the receiver
+  SELECT id FROM users WHERE id = $1
+
+  // DEBIT the sender
+  UPDATE users SET balance = balance - $1 WHERE id = $2
+
+  // CREDIT the receiver
+  UPDATE users SET balance = balance + $1 WHERE id = $2
+
+  // AUDIT log
+  INSERT INTO transactions (sender_id, receiver_id, amount, status) VALUES ($1, $2, $3, $4)
+
+  // COMMIT
+  COMMIT
+
+  // If transaction fails ROLLBACK
+  ROLLBACK
+  ```
+  
+
 ### -> GET `/api/transactions/:userId?order=desc`
   Fetches transaction history for a user (sender or receiver), sorted by newest first.
 
@@ -182,12 +210,25 @@ backend design, aligned with real-world fintech systems.
 }
 ```
 
+  Query used for retrieving transaction history(You can also check the implementation in `appController.js`):
+  ```
+  SELECT id, sender_id, receiver_id, amount, status, created_at
+  FROM transactions
+  WHERE sender_id = $1 OR receiver_id = $1
+  ORDER BY created_at ${order}
+  ```
+
 ### -> GET `/api/balance/:userId`
   Fetches the current balance of a user.
 
   Response(updated balance after successful transaction):
   ```
   {"balance":"2900.00"}
+  ```
+
+  Query used to get the balance for a user(You can also check the implementation in `appController.js`):
+  ```
+  SELECT balance FROM users WHERE id = $1
   ```
 
 ---
