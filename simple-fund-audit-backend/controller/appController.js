@@ -12,6 +12,13 @@ export const transfer = async (req, res) => {
         });
     }
 
+    // Checks whether sender entered his own ID in the receiver field
+    if(senderId === receiverId) {
+      return res.status(400).json({
+            message: "Please enter valid receiver ID"
+        });
+    }
+
     // Regex to avoid any unnecessary input in the amount field
     const amountRegex = /^\d+(\.\d{1,2})?$/;
 

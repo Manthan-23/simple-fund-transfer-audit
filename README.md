@@ -235,6 +235,7 @@ backend design, aligned with real-world fintech systems.
   > even though there was enough balance. The fix was to `parseFloat` the amount value.
 
 - After the above issue, I tested various kinds of input in the `Amount field` like ( 'abcd', 'abcd10', '10abcd' ), to handle this kind of inputs I took some help from AI to genearate a `regex` which i can apply on the input field.
+- Also, I got this later, that if `sender` enters his own ID as the `receiver_ID`, the transfer was getting successful, so I fixed this edge case later.
 
 ### -> Effectiveness Score
 
